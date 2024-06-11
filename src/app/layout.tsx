@@ -24,7 +24,14 @@ export default function RootLayout({
             <Sidebar />
           </div>
           <div>{children}</div>
-          <div>
+          <div className="w-[24rem] border-l h-screen p-3 hidden lg:inline">
+            <div className="sticky top-0 pt-5">
+              <input
+                className="bg-gray-100 border border-gray-200 rounded-3xl text-sm px-3 py-1 w-full"
+                type="text"
+                placeholder="Search.."
+              />
+            </div>
             <News />
           </div>
         </div>
