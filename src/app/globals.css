@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .hoverEffect {
+    @apply duration-200 cursor-pointer ease-in-out;
+  }
+}
