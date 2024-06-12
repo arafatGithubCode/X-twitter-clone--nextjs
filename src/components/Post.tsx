@@ -31,7 +31,7 @@ const Post: React.FC<PostProps> = ({ id, post }) => {
       <div className="flex-1">
         <div className="flex items-center justify-between gap-1">
           <div className="flex items-center gap-1">
-            <h4 className="text-xs font-bold whitespace-nowrap truncate">
+            <h4 className="text-sm font-bold whitespace-nowrap truncate">
               {post?.name}
             </h4>
             <span className="text-xs whitespace-nowrap truncate">
@@ -46,7 +46,7 @@ const Post: React.FC<PostProps> = ({ id, post }) => {
         <Link href={`/posts/${id}`}>
           <img src={post?.image} className="rounded-2xl mr-2" />
         </Link>
-        <Icons />
+        <Icons id={id} uid={post.uid} />
       </div>
     </div>
   );

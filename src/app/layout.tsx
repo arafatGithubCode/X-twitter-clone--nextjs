@@ -4,6 +4,8 @@ import "./globals.css";
 import Sidebar from "@/components/Sidebar";
 import News from "@/components/News";
 import SessionWrapper from "@/components/SessionWrapper";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -37,6 +39,18 @@ export default function RootLayout({
               <News />
             </div>
           </div>
+          <ToastContainer
+            position="top-right"
+            autoClose={2000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="dark"
+          />
         </body>
       </html>
     </SessionWrapper>
