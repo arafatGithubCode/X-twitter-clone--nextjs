@@ -85,6 +85,7 @@ export default function Input() {
     setText("");
     setSelectedFile(null);
     setImageFileUrl(null);
+    location.reload();
   };
 
   if (!session) return null;
