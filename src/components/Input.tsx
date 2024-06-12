@@ -18,6 +18,7 @@ export default function Input() {
   const [imageFileUrl, setImageFileUrl] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isImageUploading, setIsImageUploading] = useState<boolean>(false);
+  const [progressbar, setProgressbar] = useState<string>("");
 
   const addImageToPost = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target?.files;
@@ -38,25 +39,28 @@ export default function Input() {
     setIsImageUploading(true);
     const storage = getStorage(app);
     const fileName = new Date().getTime() + "-" + file.name;
-    const storageRef = ref(storage, fileName);
+    const storageRef = ref(storage, `post-images/${fileName}`);
     const uploadTask = uploadBytesResumable(storageRef, file);
+
     uploadTask.on(
       "state_changed",
       (snapShort) => {
         const progress =
           (snapShort.bytesTransferred / snapShort.totalBytes) * 100;
-        console.log(`uploading ${progress} $ done`);
+        setProgressbar(`Uploading ${progress.toFixed(0)} % done`);
       },
       (error) => {
         console.log(error);
         setIsImageUploading(false);
         setSelectedFile(null);
         setImageFileUrl(null);
+        setProgressbar("");
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
           setImageFileUrl(downloadURL);
           setIsImageUploading(false);
+          setProgressbar("");
         });
       }
     );
@@ -65,12 +69,19 @@ export default function Input() {
   if (!session) return null;
 
   return (
-    <div className="flex space-x-3 w-full p-3 border-b border-gray-200">
+    <div className="flex space-x-3 w-full p-3 border-b border-gray-200 relative">
       <img
         src={session.user?.image || ""}
         alt="user-img"
         className="w-7 h-7 rounded-full cursor-pointer hover:brightness-95 hoverEffect"
       />
+
+      {progressbar && (
+        <p className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-300 px-3 py-1 rounded-full font-semibold">
+          {progressbar}
+        </p>
+      )}
+
       <div className="divide-y-2 w-full divide-gray-200">
         <textarea
           className="w-full border-none outline-none tracking-wide min-h-[50px] text-gray-700"
@@ -97,7 +108,10 @@ export default function Input() {
             accept="image/*"
             className="hidden"
           />
-          <button className="bg-blue-400 text-white px-4 py-1.5 rounded-full hover:brightness-95 hoverEffect disabled:opacity-45 font-bold shadow">
+          <button
+            disabled={isImageUploading}
+            className="bg-blue-400 text-white px-4 py-1.5 rounded-full hover:brightness-95 hoverEffect disabled:opacity-45 font-bold shadow disabled:cursor-none"
+          >
             Post
           </button>
         </div>
