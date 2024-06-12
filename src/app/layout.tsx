@@ -25,7 +25,7 @@ export default function RootLayout({
             <div className="hidden sm:inline border-r h-screen">
               <Sidebar />
             </div>
-            <div>{children}</div>
+            <div className="w-2xl flex-1">{children}</div>
             <div className="w-[24rem] border-l h-screen p-3 hidden lg:inline">
               <div className="sticky top-0 pt-5">
                 <input
