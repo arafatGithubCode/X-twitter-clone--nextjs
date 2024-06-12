@@ -2,6 +2,7 @@ import { Timestamp } from "firebase/firestore";
 import Link from "next/link";
 import React from "react";
 import { HiDotsHorizontal } from "react-icons/hi";
+import Icons from "./Icons";
 
 interface PostData {
   name: string;
@@ -45,6 +46,7 @@ const Post: React.FC<PostProps> = ({ id, post }) => {
         <Link href={`/posts/${id}`}>
           <img src={post?.image} className="rounded-2xl mr-2" />
         </Link>
+        <Icons />
       </div>
     </div>
   );
