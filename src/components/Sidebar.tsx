@@ -1,8 +1,13 @@
+"use client";
+
+import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { FaXTwitter } from "react-icons/fa6";
 import { TiHome } from "react-icons/ti";
 
 export default function Sidebar() {
+  const { data: session } = useSession();
+
   return (
     <div className="space-y-2 p-3">
       <Link href="/">
@@ -15,9 +20,21 @@ export default function Sidebar() {
         <TiHome className="w-7 h-7" />
         <span className="font-semibold hidden xl:inline">Home</span>
       </Link>
-      <button className="bg-blue-400 rounded-full hover:brightness-95 w-48 h-9 text-white mt-4 hoverEffect shadow hidden xl:inline">
-        Sign In
-      </button>
+      {session ? (
+        <button
+          onClick={() => signOut()}
+          className="bg-blue-400 rounded-full hover:brightness-95 w-48 h-9 text-white mt-4 hoverEffect shadow hidden xl:inline"
+        >
+          Sign Out
+        </button>
+      ) : (
+        <button
+          onClick={() => signIn()}
+          className="bg-blue-400 rounded-full hover:brightness-95 w-48 h-9 text-white mt-4 hoverEffect shadow hidden xl:inline"
+        >
+          Sign In
+        </button>
+      )}
     </div>
   );
 }
