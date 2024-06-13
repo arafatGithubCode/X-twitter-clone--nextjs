@@ -6,9 +6,16 @@ import Modal from "react-modal";
 import { HiX } from "react-icons/hi";
 import { useSession } from "next-auth/react";
 import { ChangeEvent, useEffect, useState } from "react";
-import { doc, onSnapshot } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  onSnapshot,
+  serverTimestamp,
+} from "firebase/firestore";
 import { db } from "@/firebase";
 import { Session } from "next-auth";
+import { useRouter } from "next/navigation";
 
 interface Post {
   profileImg?: string;
@@ -23,6 +30,7 @@ export default function CommentModal() {
   const { data: session } = useSession() as { data: Session | null };
   const [post, setPost] = useState<Post | null>(null);
   const [input, setInput] = useState<string>("");
+  const router = useRouter();
 
   useEffect(() => {
     if (postId !== "") {
@@ -37,6 +45,24 @@ export default function CommentModal() {
       return () => unsubscribe();
     }
   }, [postId]);
+
+  const handleCommentSend = async () => {
+    addDoc(collection(db, "posts", postId, "comments"), {
+      name: session?.user?.name,
+      username: session?.user?.username,
+      userImg: session?.user?.image,
+      comment: input,
+      timestamp: serverTimestamp(),
+    })
+      .then(() => {
+        setInput("");
+        setOpen(false);
+        router.push(`/posts/${postId}`);
+      })
+      .catch((error: Error) => {
+        console.error("Error add comment", error);
+      });
+  };
   return (
     <div>
       {open && (
@@ -88,6 +114,7 @@ export default function CommentModal() {
                 </div>
                 <div className="flex items-center justify-end pt-2.5">
                   <button
+                    onClick={handleCommentSend}
                     disabled={input.trim() === ""}
                     className="bg-blue-400 text-white px-4 py-1.5 rounded-full disabled:opacity-50 hover:brightness-95 hoverEffect"
                   >
