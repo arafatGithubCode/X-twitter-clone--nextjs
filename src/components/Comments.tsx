@@ -32,7 +32,12 @@ const Comments = ({ id }: { id: string }) => {
     <>
       {comments &&
         comments.map((comment) => (
-          <Comment key={comment.id} comment={comment.data()} id={comment.id} />
+          <Comment
+            key={comment.id}
+            comment={comment.data()}
+            commentId={comment.id}
+            originalPostId={id}
+          />
         ))}
     </>
   );
