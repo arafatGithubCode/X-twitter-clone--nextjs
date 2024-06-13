@@ -1,19 +1,8 @@
-import { Timestamp } from "firebase/firestore";
 import Link from "next/link";
 import React from "react";
 import { HiDotsHorizontal } from "react-icons/hi";
 import Icons from "./Icons";
-
-interface PostData {
-  name: string;
-  username: string;
-  id: string;
-  uid: string;
-  profileImg: string;
-  timestamp: Timestamp;
-  text: string;
-  image: string;
-}
+import { PostData } from "@/types/types";
 
 interface PostProps {
   id: string;
