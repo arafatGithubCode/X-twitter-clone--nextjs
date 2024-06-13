@@ -22,7 +22,7 @@ import {
 } from "react-icons/hi";
 import { toast } from "react-toastify";
 import { useRecoilState } from "recoil";
-import { modalState } from "@/atom/modalAtom";
+import { modalState, postIdState } from "@/atom/modalAtom";
 interface IconsProps {
   id: string;
   uid: string;
@@ -33,6 +33,7 @@ const Icons: React.FC<IconsProps> = ({ id, uid }) => {
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [likes, setLikes] = useState<QueryDocumentSnapshot<DocumentData>[]>([]);
   const [open, setOpen] = useRecoilState(modalState);
+  const [postId, setPostId] = useRecoilState(postIdState);
 
   const handleLike = async () => {
     if (session) {
@@ -87,7 +88,14 @@ const Icons: React.FC<IconsProps> = ({ id, uid }) => {
   return (
     <div className="flex items-center justify-start gap-5 text-gray-500 p-1">
       <HiOutlineChat
-        onClick={() => setOpen(!open)}
+        onClick={() => {
+          if (!session) {
+            signIn();
+          } else {
+            setOpen(!open);
+            setPostId(id);
+          }
+        }}
         className="w-8 h-8 p-2 rounded-full cursor-pointer hover:bg-gray-100 hover:text-sky-500 hoverEffect"
       />
       <div className="flex items-center justify-center gap-1">
