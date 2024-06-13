@@ -4,6 +4,7 @@ import { Timestamp, doc, getDoc } from "firebase/firestore";
 import Link from "next/link";
 import { HiArrowLeft } from "react-icons/hi";
 import { PostData } from "@/types/types";
+import Comments from "@/components/Comments";
 
 interface Data {
   id?: string;
@@ -41,7 +42,7 @@ export default async function PostPage({ params }: PostPageProps) {
 
   return (
     <div className="max-w-xl mx-auto border-r border-l h-screen p-2">
-      <div className="flex items-center space-x-1 px-3 py-1 border-b sticky top-0 z-50">
+      <div className="flex items-center space-x-1 px-3 py-1 border-b sticky top-0 z-50 bg-white/50">
         <Link
           href="/"
           className="hover:bg-gray-100 rounded-full hoverEffect p-2"
@@ -51,6 +52,7 @@ export default async function PostPage({ params }: PostPageProps) {
         <h1 className="sm:text-lg">Home</h1>
       </div>
       <Post post={postData} id={postData.id} />
+      <Comments id={params.id} />
     </div>
   );
 }
